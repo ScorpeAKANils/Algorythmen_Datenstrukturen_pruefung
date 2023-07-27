@@ -1,0 +1,9 @@
+Hallo!
+Dieses Projekt ist eure Prüfung für den Fach "Algorithmen und Datenstrukturen". Ihr habt 2 Wochen Zeit diese Prüfung zu bearbeiten. Eure Aufgabe ist es alle Methoden zu implementieren, die in diesem Projekt fehlen. Die Tests (Window-General-Test Runner) sollen euch ein Gefühl dafür geben was implementiert werden muss und wie weit ihr seid. Das Ziel ist es, dass am Ende alle Tests durchlaufen (ACHTUNG: Es gibt PlayMode UND EditMode Tests). Volle Punktzahl gibt es für erfolgreich laufende Tests und *sinnvolle* Implementierungen. Soll heißen: Wenn ihr Code schreibt der nur die Tests erfüllt und nicht das zugrunde liegende Problem löst, gibt es dafür auch keine Punkte.
+
+Erlaubte Hilfsmittel sind: Google, Stackoverflow und ähnliche. Ihr dürft euch auch über die Prüfung austauschen - allerdings dürft ihr keinen Code von anderen kopieren! Sollte auffallen, dass 2 oder mehr Leute die exakt selbe Lösung für eine Aufgabe haben, gibt es für diese Aufgabe keine Punkte für alle beteiligten. Falls ihr Lösung benutzt die ihr online findet, müsst ihr immer einen Link mit angeben.
+Generell dürft ihr die System und UnityEngine namespaces benutzen, es sei denn in der Klasse steht etwas anderes. System.Linq ist der einzige namespace den ihr nirgends benutzen dürft!
+
+Volle Punktzahl: 96
+
+Viel Erfolg!

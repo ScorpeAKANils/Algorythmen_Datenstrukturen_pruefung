@@ -1,0 +1,14 @@
+{
+    "name": "Iteration_VS_Recursion",
+    "rootNamespace": "Iteration_VS_Recursion",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
