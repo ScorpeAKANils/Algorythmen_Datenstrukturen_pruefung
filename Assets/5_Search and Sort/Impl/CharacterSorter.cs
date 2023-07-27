@@ -198,6 +198,12 @@ namespace Search_Sort
             UpdateCharacterPositions();
         }
 
+        public void SortCharactersByHeight(Character[] arr)
+        {
+            MergeSort(arr, 0, arr.Length - 1, "Height", isInt: true);
+            UpdateCharacterPositions();
+        }
+
         /// <summary>
         /// Points: 4
         /// </summary>

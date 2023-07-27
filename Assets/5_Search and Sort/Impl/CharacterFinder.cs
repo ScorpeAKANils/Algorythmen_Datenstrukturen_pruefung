@@ -1,4 +1,8 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine.TextCore.Text;
 
 namespace Search_Sort
 {
@@ -11,23 +15,27 @@ namespace Search_Sort
         [SerializeField]
         private CharacterSorter characterSorter;
 
-        public Character[] BinarySearch(Character[] arr, int searchedValue, int low, int high)
+        public Character[] BinarySearch(List<Character> arr, int searchedValue, string varName, int low, int high)
         {
-            int index = 0;
-            Character[] returnVal = null;
-            int mid; 
-            while (low < high)
+            List<Character> list = new List<Character>();
+            int mid;
+
+            while (low <= high) // Use <= instead of just <
             {
                 mid = (low + high) / 2;
-                if (arr[mid].Age == searchedValue)
+                Character characterRefOne = arr[mid];
+                PropertyInfo property = typeof(Character).GetProperty(varName);
+                int temp = (int)property.GetValue(characterRefOne);
+
+                if (temp == searchedValue)
                 {
-                    returnVal[index] = arr[mid];
-                    Debug.Log("found x");
-                    index++;
+                    list.Add(arr[mid]); // Use list.Add() instead of List[index] = arr[mid]
+                    arr.RemoveAt(mid);
+                    high--; 
                 }
                 else
                 {
-                    if (arr[mid].Age < searchedValue)
+                    if (temp < searchedValue)
                     {
                         low = mid + 1;
                     }
@@ -37,41 +45,58 @@ namespace Search_Sort
                     }
                 }
             }
-            if (returnVal == null)
+
+            Character[] returnValue = list.ToArray(); // Convert the list to an array
+
+            if (returnValue.Length == 0) // Check the length of the array
             {
-                Debug.LogError("x is not in the array!"); 
+                Debug.LogError("x is not in the array!");
             }
 
-                return returnVal; 
+            return returnValue;
         }
-  
+
+
+
 
         /// <summary>
         /// Points: 2
         /// </summary>
         public Character[] FindCharactersWithAge(int age)
         {
-            Character[] character = GameObject.FindObjectsOfType<Character>();  
-            characterSorter.SortCharactersByAge(character);
-            return BinarySearch(character, age, 0, character.Length - 1); 
+            
+            characterSorter.SortCharactersByAge(characterSorter.characters);
+            List<Character> ListToCheck = new List<Character>(); 
+            foreach(Character c in characterSorter.characters) 
+            {
+                ListToCheck.Add(c); 
+            }
+            return BinarySearch(ListToCheck, age, "Age", 0, ListToCheck.Count- 1); 
         }
 
-        private void Start()
-        {
-            var lol = FindObjectsOfType<Character>();
-            int random = Random.Range(0, lol.Length - 1); 
-            var x = FindCharactersWithAge(lol[random].Age);
-            foreach (Character c in x)
-            {
-                Debug.Log(c.Age + " eigentlich funktioniere ich!"); 
-            }
-        }
+     //  private void Start()
+     //  {
+     //      var lol = FindObjectsOfType<Character>();
+     //      int random = Random.Range(0, lol.Length - 1); 
+     //      var x = FindCharactersWithAge(lol[random].Age);
+     //      foreach (Character c in x)
+     //      {
+     //          Debug.Log(c.Age + " eigentlich funktioniere ich!"); 
+     //      }
+     //  }
         /// <summary>
         /// Points: 2
         /// </summary>
         public Character[] FindCharactersWithHeight(int height)
         {
-            throw new System.NotImplementedException();
+            Character[] character = characterSorter.characters; 
+            characterSorter.SortCharactersByHeight(character);
+            List<Character> ListToCheck = new List<Character>();
+            foreach (Character c in character)
+            {
+                ListToCheck.Add(c);
+            }
+            return BinarySearch(ListToCheck, height, "Height", 0, character.Length - 1);
         }
     }
 }
