@@ -24,34 +24,28 @@ namespace Search_Sort
     public class CharacterSorter : MonoBehaviour
     {
         public Character[] characters;
-
         public IReadOnlyList<Character> Characters => characters;
+
+        //Die verwendeten Sortiertalogorythmen sind ganz unten im Skript. 
         //https://docs.google.com/presentation/d/1r1-HsvNncRdZ2ZudhwOBAbhun1Pbl3rW/edit#slide=id.p45
         /// <summary>
         /// Points: 2
         /// </summary>
         public void SortCharactersByAge()
         {
-
-            
-            bool isSorted = false;
             characters = FindObjectsOfType<Character>();
             if (characters.Length <= 1)
             {
                 return;
             }
             MergeSort(characters, 0, characters.Length - 1, "Age", isInt: true);
-            foreach (Character p in characters)
-            {
-                Debug.Log(p.Age);
-            }
-            Debug.Log("Fertig sortiert");
             UpdateCharacterPositions();
         }
+
+
 
         public void SortCharactersByAge(Character[] characters)
         {
-            bool isSorted = false;
             characters = FindObjectsOfType<Character>();
             if (characters.Length <= 1)
             {
@@ -65,7 +59,112 @@ namespace Search_Sort
             Debug.Log("Fertig sortiert");
             UpdateCharacterPositions();
         }
-        public static void MergeSort(Character[] arr, int left, int right, string fieldName, bool isInt = false, bool isString = false, bool isSex = false, bool isReversed = false) 
+
+        /// <summary>
+        /// Points: 2´
+        /// </summary
+        public void SortCharactersByFirstName()
+        {
+            MergeSort(characters, 0, characters.Length - 1, "FirstName", isString: true);
+            UpdateCharacterPositions();
+        }
+
+        /// <summary>
+        /// Points: 2
+        /// </summary>
+        public void SortCharactersByHeight()
+        {
+            MergeSort(characters, 0, characters.Length - 1, "Height", isInt: true);
+            UpdateCharacterPositions();
+        }
+
+        public void SortCharactersByHeight(Character[] arr)
+        {
+            MergeSort(arr, 0, arr.Length - 1, "Height", isInt: true);
+            UpdateCharacterPositions();
+        }
+
+        /// <summary>
+        /// Points: 4
+        /// </summary>
+        public void SortCharactersByHeightThenByReversedAge()
+        {
+            bool heightSorted = false;
+            if (heightSorted == false)
+            {
+                QuickSort(characters, 0, characters.Length - 1);
+                heightSorted = true;
+            }
+            else if(heightSorted)
+            {
+                MergeSort(characters, characters.Length - 1, 0, "Age", isInt: true, isReversed: true);
+            }
+            UpdateCharacterPositions();
+
+            foreach (Character i in characters)
+            {
+                Debug.Log(i.Age);
+            }
+        }
+
+        /// <summary>
+        /// Points: 2
+        /// </summary>
+        public void SortCharactersByKills()
+        {
+            MergeSort(characters, 0, characters.Length - 1, "SoloTitanKills", isInt: true);
+            UpdateCharacterPositions();
+        }
+
+        /// <summary>
+        /// Points: 2
+        /// </summary>
+        public void SortCharactersByLastName()
+        {
+            MergeSort(characters, 0, characters.Length - 1, "LastName", isString: true);
+            UpdateCharacterPositions();
+        }
+
+        /// <summary>
+        /// Points: 2
+        /// </summary>
+        public void SortCharactersBySex()
+        {
+            MergeSort(characters, 0, characters.Length - 1, "Sex", isInt: true);
+            UpdateCharacterPositions();
+        }
+
+        /// <summary>
+        /// Points: 2
+        /// </summary>
+        public void SortCharactersByWeight()
+        {
+            MergeSort(characters, 0, characters.Length - 1, "Weight", isInt: true);
+
+            UpdateCharacterPositions();
+        }
+
+        private void SetCharacterAtPosition(Character character, int position)
+        {
+            Transform parent = character.transform.parent;
+            parent.position = new Vector3((position % 12) * 2, 0, (position / 12) * 2);
+        }
+
+        private void Start()
+        {
+            characters = GameObject.FindObjectsOfType<Character>();
+        }
+
+        private void UpdateCharacterPositions()
+        {
+            for (int i = 0; i < characters.Length; i++)
+            {
+                SetCharacterAtPosition(characters[i], i);
+
+            }
+        }
+        //Merge Sort 
+        public static void MergeSort(Character[] arr, int left, int right, string fieldName, bool isInt = false, bool isString = false, bool isSex = false, bool isReversed = false)
         {
             if (left < right)
             {
@@ -74,11 +173,11 @@ namespace Search_Sort
                 MergeSort(arr, left, m, fieldName, isInt, isString, isReversed);
                 MergeSort(arr, m + 1, right, fieldName, isInt, isString, isReversed);
 
-                Merge(arr, left, m, right, fieldName,isInt, isString, isReversed);
+                Merge(arr, left, m, right, fieldName, isInt, isString, isReversed);
             }
         }
 
-        public static void Merge(Character[] arr, int left, int middle, int right, string fieldName, bool isInt = false, bool isString = false, bool isReversed=false)
+        public static void Merge(Character[] arr, int left, int middle, int right, string fieldName, bool isInt = false, bool isString = false, bool isReversed = false)
         {
             int leftArrLength = middle - left + 1;
             int rightArrLength = right - middle;
@@ -180,106 +279,41 @@ namespace Search_Sort
             }
         }
 
-        /// <summary>
-        /// Points: 2´
-        /// </summary
-        public void SortCharactersByFirstName()
+        //QuickSort
+        public static void QuickSort(Character[] arr, int low, int high)
         {
-            MergeSort(characters, 0, characters.Length - 1, "FirstName", isString: true); 
-            UpdateCharacterPositions();
-        }
-
-        /// <summary>
-        /// Points: 2
-        /// </summary>
-        public void SortCharactersByHeight()
-        {
-            MergeSort(characters, 0, characters.Length - 1, "Height", isInt: true); 
-            UpdateCharacterPositions();
-        }
-
-        public void SortCharactersByHeight(Character[] arr)
-        {
-            MergeSort(arr, 0, arr.Length - 1, "Height", isInt: true);
-            UpdateCharacterPositions();
-        }
-
-        /// <summary>
-        /// Points: 4
-        /// </summary>
-        public void SortCharactersByHeightThenByReversedAge()
-        {
-            bool heightSorted = false;
-
-            MergeSort(characters, 0, characters.Length - 1, "Height", isInt: true);
-            heightSorted = true;
-            if (heightSorted)
+            if (low < high)
             {
-                MergeSort(characters, characters.Length - 1, 0,  "Age", isInt: true, isReversed: true);
-            }
-            UpdateCharacterPositions();
-            
-            foreach (Character i in characters)
-            {
-                Debug.Log(i.Age); 
+                int pivot = Partition(arr, low, high);
+                QuickSort(arr, low, pivot - 1);
+                QuickSort(arr, pivot + 1, high); 
             }
         }
 
-        /// <summary>
-        /// Points: 2
-        /// </summary>
-        public void SortCharactersByKills()
+        public static int Partition(Character[] arr, int low, int high)
         {
-            MergeSort(characters, 0, characters.Length - 1, "SoloTitanKills", isInt: true); 
-            UpdateCharacterPositions();
-        }
+            int pivot = arr[high].Height;
+            int partition = low;
 
-        /// <summary>
-        /// Points: 2
-        /// </summary>
-        public void SortCharactersByLastName()
-        {
-            MergeSort(characters, 0, characters.Length - 1, "LastName", isString: true);
-            UpdateCharacterPositions();
-        }
-
-        /// <summary>
-        /// Points: 2
-        /// </summary>
-        public void SortCharactersBySex()
-        {
-            MergeSort(characters, 0, characters.Length - 1, "Sex", isInt: true);
-            UpdateCharacterPositions();
-        }
-
-        /// <summary>
-        /// Points: 2
-        /// </summary>
-        public void SortCharactersByWeight()
-        {
-            MergeSort(characters, 0, characters.Length - 1, "Weight", isInt: true); 
-
-            UpdateCharacterPositions();
-        }
-
-        private void SetCharacterAtPosition(Character character, int position)
-        {
-            Transform parent = character.transform.parent;
-            parent.position = new Vector3((position % 12) * 2, 0, (position / 12) * 2);
-        }
-
-        private void Start()
-        {
-            characters = GameObject.FindObjectsOfType<Character>();
-        }
-
-        private void UpdateCharacterPositions()
-        {
-            for (int i = 0; i < characters.Length; i++)
+            for (int i = low; i < high; i++)
             {
-                SetCharacterAtPosition(characters[i], i);
-
+                if (arr[i].Height <= pivot)
+                {
+                    /*wenn ich hier schon reflections raus lasse, dann doch bitte die Swap funktion generisch halten. Kann man safe immermal gebrauchen, ich hätte zwar bock, aber das frisst wahrscheoinlich wieder so viel performance, und da ich delegates nicht verstehe, und das die einzigen sachen sind, welche ich für generische datentypen zum vergleichen gefunden habe, würde das wieder so ein if kleister werden. Hat sich zwar gelohnt, kann damit eigentlich den ganzen Aufgabenteil hier lösen, aber ich bin mir nicht sicher, ob das "oder" in der Aufgaben stellung freiwillig ist*/
+                    Swap<Character>(ref arr[i], ref arr[partition]);
+                    partition++; 
+                }
             }
+            Swap<Character>(ref arr[partition], ref arr[high]);
+            return partition; 
+        }
+
+        private static void Swap<T>(ref T i, ref T x)
+        {
+            var temp1 = i;
+            var temp2 = x;
+            i = temp2;
+            x = temp1;
         }
     }
 }
