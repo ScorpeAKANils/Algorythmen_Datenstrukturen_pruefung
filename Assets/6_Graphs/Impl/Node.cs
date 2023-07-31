@@ -8,7 +8,11 @@ namespace Graphs
     {
         [SerializeField]
         private List<Node> neighbours;
-        
+        public float cost;
+        private void Awake()
+        {
+        }
+
         private void OnDrawGizmos()
         {
             Color oldColor = Gizmos.color;

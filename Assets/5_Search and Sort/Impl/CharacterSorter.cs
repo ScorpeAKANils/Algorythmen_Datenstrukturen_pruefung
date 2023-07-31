@@ -80,7 +80,8 @@ namespace Search_Sort
 
         public void SortCharactersByHeight(Character[] arr)
         {
-            MergeSort(arr, 0, arr.Length - 1, "Height", isInt: true);
+            //MergeSort(arr, 0, arr.Length - 1, "Height", isInt: true);
+            QuickSort(characters, 0, characters.Length - 1);
             UpdateCharacterPositions();
         }
 
