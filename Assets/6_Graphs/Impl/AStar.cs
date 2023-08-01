@@ -97,8 +97,6 @@ namespace Graphs
                 closed.Add(current);
                 open.Remove(current);
 
-                if (current == to)
-                {
                     if (current == to)
                     {
                         path.Add(current);
@@ -122,7 +120,7 @@ namespace Graphs
                         isGenerating = false;
                         yield break;
                     }
-                }
+                
 
                 foreach (Node node in current.Neighbours)
                 {
