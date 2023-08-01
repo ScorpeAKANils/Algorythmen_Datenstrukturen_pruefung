@@ -80,8 +80,8 @@ namespace Search_Sort
 
         public void SortCharactersByHeight(Character[] arr)
         {
-            //MergeSort(arr, 0, arr.Length - 1, "Height", isInt: true);
-            QuickSort(characters, 0, characters.Length - 1);
+            MergeSort(arr, 0, arr.Length - 1, "Height", isInt: true);
+            //QuickSort(characters, 0, characters.Length - 1);
             UpdateCharacterPositions();
         }
 
@@ -223,6 +223,7 @@ namespace Search_Sort
                         Character characterRefOne = leftArr[i];
                         Character characterRefTwo = rightArr[j];
                         PropertyInfo property = typeof(Character).GetProperty(fieldName);
+
                         var temp1 = (int)property.GetValue(characterRefOne);
                         var temp2 = (int)property.GetValue(characterRefTwo);
                         if (temp1 <= temp2)

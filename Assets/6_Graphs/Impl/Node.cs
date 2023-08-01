@@ -8,10 +8,9 @@ namespace Graphs
     {
         [SerializeField]
         private List<Node> neighbours;
+        public List<Node> Neighbours => neighbours; 
         public float cost;
-        private void Awake()
-        {
-        }
+        public Node predecessor; 
 
         private void OnDrawGizmos()
         {

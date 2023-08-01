@@ -11,18 +11,33 @@ namespace Graphs
     /// Total points: 10
     ///
     /// https://docs.google.com/presentation/d/1r1-HsvNncRdZ2ZudhwOBAbhun1Pbl3rW/edit#slide=id.p34
+    /// https://learn.unity.com/project/a-36369ng?uv=2021.3
+    /// https://www.youtube.com/watch?v=-L-WgKMFuhE
+    /// https://www.youtube.com/watch?v=mZfyt03LDH4
     /// </summary>
     public class AStar : MonoBehaviour
     {
         private Action<Node[]> callback;
         private bool fastForward;
-        private Node from;
+        public Node from;
         private bool isGenerating;
         private bool step;
-        private Node to;
+        public Node to;
+        public bool startGenerating; 
         public bool IsGenerating => isGenerating;
+        public LineRenderer pathLineRenderer;
 
 
+        private void Update()
+        {
+            if (startGenerating)
+            {
+                if (from != null && to != null)
+                {
+                    GeneratePath(from, to, callback); 
+                }
+            }
+        }
         /// <summary>
         /// Go through all the steps of the calculation.
         /// </summary>
@@ -59,7 +74,8 @@ namespace Graphs
                 if (NodeHelper.EstimateDistance(node, to) < min)
                 {
                     min = NodeHelper.EstimateDistance(node, to);
-                    smallest = node; 
+                    smallest = node;
+                    smallest.cost = min; 
                 }
             }
             return smallest; 
@@ -69,6 +85,7 @@ namespace Graphs
         /// </summary>
         private IEnumerator DoGeneratePath()
         {
+            List<Node> path = new List<Node>();
             Node current;
             List<Node> open = new List<Node>();
             List<Node> closed = new List<Node>();
@@ -79,14 +96,77 @@ namespace Graphs
                 current = GetLowestCost(open);
                 closed.Add(current);
                 open.Remove(current);
+
                 if (current == to)
                 {
-                    yield return new(); 
+                    if (current == to)
+                    {
+                        path.Add(current);
+                        Node prev = current.predecessor;
+                        while (prev != null)
+                        {
+                            path.Insert(0, prev);
+                            prev = prev.predecessor;
+                        }
+
+                        Vector3[] pathPositions = new Vector3[path.Count];
+                        for (int i = 0; i < path.Count; i++)
+                        {
+                            pathPositions[i] = path[i].gameObject.transform.position;
+                        }
+
+                        pathLineRenderer.positionCount = path.Count;
+                        pathLineRenderer.SetPositions(pathPositions);
+
+                        callback(path.ToArray());
+                        isGenerating = false;
+                        yield break;
+                    }
+                }
+
+                foreach (Node node in current.Neighbours)
+                {
+                    float newCost = current.cost + NodeHelper.EstimateDistance(current, node);
+
+                    if (open.Contains(node) && node.cost <= newCost)
+                    {
+                        continue;
+                    }
+
+                    if (closed.Contains(node) && node.cost <= newCost)
+                    {
+                        continue;
+                    }
+
+                    if (!open.Contains(node) && !closed.Contains(node))
+                    {
+                        open.Add(node);
+                    }
+
+                    node.cost = newCost;
+                    node.predecessor = current;
+                }
+
+                if (step)
+                {
+                    step = false;
+                    yield return new WaitForEndOfFrame();
+                }
+                else if (fastForward)
+                {
+                    yield return new WaitForEndOfFrame();
+                }
+                else
+                {
+                    yield return null;
                 }
             }
-                //callback(path);
-                //isGenerating = false;
-                yield return new WaitForEndOfFrame(); 
+
+            Debug.LogErrorFormat("Kein Pfad gefunden");
+            callback(null);
+            isGenerating = false;
         }
+
+
     }
 }
