@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -6,15 +8,6 @@ using UnityEngine.TextCore.Text;
 
 namespace Search_Sort
 {
-
-    /*
-     internet resourcen:
-    //um schreib arbeit zu sparen(dachte ich xDDDD)
-    https://learn.microsoft.com/en-us/dotnet/standard/generics/
-
-     
-     
-     */
     /// <summary>
     /// Implement all sorting methods using your own quick sort or merge sort implementation!
     /// Total points: 18
@@ -23,11 +16,14 @@ namespace Search_Sort
 
     public class CharacterSorter : MonoBehaviour
     {
-        public Character[] characters;
+        private Character[] characters;
         public IReadOnlyList<Character> Characters => characters;
 
         //Die verwendeten Sortiertalogorythmen sind ganz unten im Skript. 
         //https://docs.google.com/presentation/d/1r1-HsvNncRdZ2ZudhwOBAbhun1Pbl3rW/edit#slide=id.p45
+        //https://www.youtube.com/watch?v=UdstAE72JRE
+        //https://stackoverflow.com/questions/5053521/getting-variable-by-name-in-c-sharp
+        //https://learn.microsoft.com/en-us/dotnet/standard/generics/
         /// <summary>
         /// Points: 2
         /// </summary>
@@ -52,11 +48,6 @@ namespace Search_Sort
                 return;
             }
             MergeSort(characters, 0, characters.Length - 1, "Age", isInt: true);
-            foreach (Character p in characters)
-            {
-                Debug.Log(p.Age);
-            }
-            Debug.Log("Fertig sortiert");
             UpdateCharacterPositions();
         }
 
@@ -65,6 +56,7 @@ namespace Search_Sort
         /// </summary
         public void SortCharactersByFirstName()
         {
+            characters = FindObjectsOfType<Character>();
             MergeSort(characters, 0, characters.Length - 1, "FirstName", isString: true);
             UpdateCharacterPositions();
         }
@@ -74,12 +66,14 @@ namespace Search_Sort
         /// </summary>
         public void SortCharactersByHeight()
         {
+            characters = FindObjectsOfType<Character>();
             MergeSort(characters, 0, characters.Length - 1, "Height", isInt: true);
             UpdateCharacterPositions();
         }
 
         public void SortCharactersByHeight(Character[] arr)
         {
+            characters = FindObjectsOfType<Character>();
             MergeSort(arr, 0, arr.Length - 1, "Height", isInt: true);
             //QuickSort(characters, 0, characters.Length - 1);
             UpdateCharacterPositions();
@@ -90,16 +84,8 @@ namespace Search_Sort
         /// </summary>
         public void SortCharactersByHeightThenByReversedAge()
         {
-            bool heightSorted = false;
-            if (heightSorted == false)
-            {
-                QuickSort(characters, 0, characters.Length - 1);
-                heightSorted = true;
-            }
-            else if(heightSorted)
-            {
-                MergeSort(characters, characters.Length - 1, 0, "Age", isInt: true, isReversed: true);
-            }
+            characters = FindObjectsOfType<Character>();
+            QuickSort(characters, 0, characters.Length - 1); 
             UpdateCharacterPositions();
 
             foreach (Character i in characters)
@@ -113,6 +99,7 @@ namespace Search_Sort
         /// </summary>
         public void SortCharactersByKills()
         {
+            characters = FindObjectsOfType<Character>();
             MergeSort(characters, 0, characters.Length - 1, "SoloTitanKills", isInt: true);
             UpdateCharacterPositions();
         }
@@ -122,6 +109,7 @@ namespace Search_Sort
         /// </summary>
         public void SortCharactersByLastName()
         {
+            characters = FindObjectsOfType<Character>();
             MergeSort(characters, 0, characters.Length - 1, "LastName", isString: true);
             UpdateCharacterPositions();
         }
@@ -131,6 +119,7 @@ namespace Search_Sort
         /// </summary>
         public void SortCharactersBySex()
         {
+            characters = FindObjectsOfType<Character>();
             MergeSort(characters, 0, characters.Length - 1, "Sex", isInt: true);
             UpdateCharacterPositions();
         }
@@ -140,6 +129,7 @@ namespace Search_Sort
         /// </summary>
         public void SortCharactersByWeight()
         {
+            characters = FindObjectsOfType<Character>();
             MergeSort(characters, 0, characters.Length - 1, "Weight", isInt: true);
 
             UpdateCharacterPositions();
@@ -158,6 +148,7 @@ namespace Search_Sort
 
         private void UpdateCharacterPositions()
         {
+
             for (int i = 0; i < characters.Length; i++)
             {
                 SetCharacterAtPosition(characters[i], i);
@@ -165,20 +156,20 @@ namespace Search_Sort
             }
         }
         //Merge Sort 
-        public static void MergeSort(Character[] arr, int left, int right, string fieldName, bool isInt = false, bool isString = false, bool isSex = false, bool isReversed = false)
+        public static void MergeSort(Character[] arr, int left, int right, string fieldName, bool isInt = false, bool isString = false, bool isSex = false)
         {
             if (left < right)
             {
                 int m = left + (right - left) / 2;
 
-                MergeSort(arr, left, m, fieldName, isInt, isString, isReversed);
-                MergeSort(arr, m + 1, right, fieldName, isInt, isString, isReversed);
+                MergeSort(arr, left, m, fieldName, isInt, isString);
+                MergeSort(arr, m + 1, right, fieldName, isInt, isString);
 
-                Merge(arr, left, m, right, fieldName, isInt, isString, isReversed);
+                Merge(arr, left, m, right, fieldName, isInt, isString);
             }
         }
 
-        public static void Merge(Character[] arr, int left, int middle, int right, string fieldName, bool isInt = false, bool isString = false, bool isReversed = false)
+        public static void Merge(Character[] arr, int left, int middle, int right, string fieldName, bool isInt = false, bool isString = false)
         {
             int leftArrLength = middle - left + 1;
             int rightArrLength = right - middle;
@@ -218,39 +209,21 @@ namespace Search_Sort
                  */
                 if (isInt)
                 {
-                    if (!isReversed)
-                    {
-                        Character characterRefOne = leftArr[i];
-                        Character characterRefTwo = rightArr[j];
-                        PropertyInfo property = typeof(Character).GetProperty(fieldName);
+                    Character characterRefOne = leftArr[i];
+                    Character characterRefTwo = rightArr[j];
+                    PropertyInfo property = typeof(Character).GetProperty(fieldName);
 
-                        var temp1 = (int)property.GetValue(characterRefOne);
-                        var temp2 = (int)property.GetValue(characterRefTwo);
-                        if (temp1 <= temp2)
-                        {
-                            arr[k++] = leftArr[i++];
-                        }
-                        else
-                        {
-                            arr[k++] = rightArr[j++];
-                        }
+                    var temp1 = (int)property.GetValue(characterRefOne);
+                    var temp2 = (int)property.GetValue(characterRefTwo);
+                    if (temp1 <= temp2)
+                    {
+                        arr[k++] = leftArr[i++];
                     }
                     else
                     {
-                        Character characterRefOne = leftArr[i];
-                        Character characterRefTwo = rightArr[j];
-                        PropertyInfo property = typeof(Character).GetProperty(fieldName);
-                        int temp1 = (int)property.GetValue(characterRefOne);
-                        int temp2 = (int)property.GetValue(characterRefTwo);
-                        if (temp1 > temp2)
-                        {
-                            arr[k++] = leftArr[i++];
-                        }
-                        else
-                        {
-                            arr[k++] = rightArr[j++];
-                        }
+                        arr[k++] = rightArr[j++];
                     }
+                    
                 }
                 else if (isString)
                 {
@@ -301,9 +274,15 @@ namespace Search_Sort
             {
                 if (arr[i].Height <= pivot)
                 {
-                    /*wenn ich hier schon reflections raus lasse, dann doch bitte die Swap funktion generisch halten. Kann man safe immermal gebrauchen, ich hätte zwar bock, aber das frisst wahrscheoinlich wieder so viel performance, und da ich delegates nicht verstehe, und das die einzigen sachen sind, welche ich für generische datentypen zum vergleichen gefunden habe, würde das wieder so ein if kleister werden. Hat sich zwar gelohnt, kann damit eigentlich den ganzen Aufgabenteil hier lösen, aber ich bin mir nicht sicher, ob das "oder" in der Aufgaben stellung freiwillig ist*/
+                    if (arr[i].Height == pivot)
+                    {
+                        if (arr[i].Age < arr[high].Age)
+                        {
+                            Swap<Character>(ref arr[i], ref arr[high]);
+                        }
+                    }
                     Swap<Character>(ref arr[i], ref arr[partition]);
-                    partition++; 
+                    partition++;
                 }
             }
             Swap<Character>(ref arr[partition], ref arr[high]);

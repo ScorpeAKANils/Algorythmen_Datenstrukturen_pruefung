@@ -53,14 +53,9 @@ namespace ComplexDataTypes
         /// </summary>
         public void AddToFront(LinkedNode node)
         {
-            /*
-             tausche Element x mit element 0 
-             */
             LinkedNode oldRoot = root;
             root = node;
-            root.successor = oldRoot;
-            //LinkedNode* oldRootRef = oldRoot; 
-            //throw new System.NotImplementedException();
+            root.successor = oldRoot; 
         }
 
         /// <summary>
@@ -69,7 +64,7 @@ namespace ComplexDataTypes
         public int IndexOf(LinkedNode node)
         {
             int index = 0;
-            LinkedNode reminder = root; 
+            LinkedNode reminder = root;
             while (true)
             {
                 if (reminder.Equals(node))

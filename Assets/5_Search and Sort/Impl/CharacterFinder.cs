@@ -12,6 +12,23 @@ namespace Search_Sort
     /// </summary>
     public class CharacterFinder : MonoBehaviour
     {
+        private Character[] GetCharackter()
+        {
+            
+            List<Character> ListToCheck = new List<Character>();
+            foreach (Character c in characterSorter.Characters)
+            {
+                ListToCheck.Add(c);
+            }
+            Character[] charachterToCheck = new Character[ListToCheck.Count];
+            int iteretation = 0;
+            foreach(Character c in ListToCheck)
+            {
+                charachterToCheck[iteretation] = c;
+                iteretation++; 
+            }
+            return charachterToCheck; 
+        }
         [SerializeField]
         private CharacterSorter characterSorter;
 
@@ -20,7 +37,7 @@ namespace Search_Sort
             List<Character> list = new List<Character>();
             int mid;
 
-            while (low <= high) // Use <= instead of just <
+            while (low <= high) 
             {
                 mid = (low + high) / 2;
                 Character characterRefOne = arr[mid];
@@ -29,8 +46,8 @@ namespace Search_Sort
 
                 if (temp == searchedValue)
                 {
-                    list.Add(arr[mid]); // Use list.Add() instead of List[index] = arr[mid]
-                    arr.RemoveAt(mid);
+                    list.Add(arr[mid]);
+                    arr.RemoveAt(mid); 
                     high--; 
                 }
                 else
@@ -46,9 +63,9 @@ namespace Search_Sort
                 }
             }
 
-            Character[] returnValue = list.ToArray(); // Convert the list to an array
+            Character[] returnValue = list.ToArray();
 
-            if (returnValue.Length == 0) // Check the length of the array
+            if (returnValue.Length == 0) 
             {
                 Debug.LogError("x is not in the array!");
             }
@@ -64,10 +81,10 @@ namespace Search_Sort
         /// </summary>
         public Character[] FindCharactersWithAge(int age)
         {
-            
-            characterSorter.SortCharactersByAge(characterSorter.characters);
-            List<Character> ListToCheck = new List<Character>(); 
-            foreach(Character c in characterSorter.characters) 
+            var characters = GetCharackter(); 
+            characterSorter.SortCharactersByAge(characters);
+            List<Character> ListToCheck = new List<Character>();
+            foreach(Character c in characters)
             {
                 ListToCheck.Add(c); 
             }
@@ -89,14 +106,14 @@ namespace Search_Sort
         /// </summary>
         public Character[] FindCharactersWithHeight(int height)
         {
-            Character[] character = characterSorter.characters; 
-            characterSorter.SortCharactersByHeight(character);
+            var characters = GetCharackter();
+            characterSorter.SortCharactersByHeight(characters);
             List<Character> ListToCheck = new List<Character>();
-            foreach (Character c in character)
+            foreach (Character c in characters)
             {
                 ListToCheck.Add(c);
             }
-            return BinarySearch(ListToCheck, height, "Height", 0, character.Length - 1);
+            return BinarySearch(ListToCheck, height, "Height", 0, ListToCheck.Count - 1);
         }
     }
 }

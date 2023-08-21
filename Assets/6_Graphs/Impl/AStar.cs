@@ -97,30 +97,30 @@ namespace Graphs
                 closed.Add(current);
                 open.Remove(current);
 
-                    if (current == to)
+                if (current == to)
+                {
+                    path.Add(current);
+                    Node prev = current.predecessor;
+                    while (prev != null)
                     {
-                        path.Add(current);
-                        Node prev = current.predecessor;
-                        while (prev != null)
-                        {
-                            path.Insert(0, prev);
-                            prev = prev.predecessor;
-                        }
-
-                        Vector3[] pathPositions = new Vector3[path.Count];
-                        for (int i = 0; i < path.Count; i++)
-                        {
-                            pathPositions[i] = path[i].gameObject.transform.position;
-                        }
-
-                        pathLineRenderer.positionCount = path.Count;
-                        pathLineRenderer.SetPositions(pathPositions);
-
-                        callback(path.ToArray());
-                        isGenerating = false;
-                        yield break;
+                        path.Insert(0, prev);
+                        prev = prev.predecessor;
                     }
-                
+
+                    Vector3[] pathPositions = new Vector3[path.Count];
+                    for (int i = 0; i < path.Count; i++)
+                    {
+                        pathPositions[i] = path[i].gameObject.transform.position;
+                    }
+
+                    pathLineRenderer.positionCount = path.Count;
+                    pathLineRenderer.SetPositions(pathPositions);
+
+                    callback(path.ToArray());
+                    isGenerating = false;
+                    yield break;
+                }
+
 
                 foreach (Node node in current.Neighbours)
                 {
@@ -158,7 +158,7 @@ namespace Graphs
                 {
                     yield return null;
                 }
-            }
+            } 
 
             Debug.LogErrorFormat("Kein Pfad gefunden");
             callback(null);
