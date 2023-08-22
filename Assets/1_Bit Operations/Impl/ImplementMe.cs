@@ -1,5 +1,3 @@
-using System;
-
 namespace BitOperations
 {
     /// <summary>
@@ -39,11 +37,6 @@ namespace BitOperations
             for (int i = bits.Length - 1; i >= 0; i--)
             {
                 char bit = bits[i];
-                if (bit != '0' && bit != '1')
-                {
-                    throw new ArgumentException("Ungültiger binärer String.");
-                }
-
                 int bitVal = bit - '0';
                 dezVal += (uint)bitVal * PowerOfX(power);
                 power++;

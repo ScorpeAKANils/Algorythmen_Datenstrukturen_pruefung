@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 
 namespace Search_Sort
@@ -87,11 +84,6 @@ namespace Search_Sort
             characters = FindObjectsOfType<Character>();
             QuickSort(characters, 0, characters.Length - 1); 
             UpdateCharacterPositions();
-
-            foreach (Character i in characters)
-            {
-                Debug.Log(i.Age);
-            }
         }
 
         /// <summary>
@@ -202,10 +194,10 @@ namespace Search_Sort
                  * Ich sehe deswegen und wegen den Bools, dass es irgendwo eine Badpractice ist. 
                  * (das habe ich anfangs nicht bedacht, dass ich die variable samt einsatzfall ja trotzdem irgendwo vorgeben müsste, und ich merke gerade, während ich das schreibe, dass ich dann auch einfach nur diese Checks verwendet haben könnte, und dann ganz normal mit den Variablen zuarbeiten, würde mir sogar Methodstack aufrufe sparen, aber dafür habe ich jetzt zulange nach einer Lösung für die fehlenden Vergleichsoperatoren gesucht, um hier abzubrechen. Das geht einfach nicht mehr). Das ist schon ziemlich bescheiden, weil naja, hab mich anfangs mit der Idee eigentlich recht schlau gefühlt und jetzt zweifel ich dran. Naja, aber immerhin wird sonnst keiner das so lösen und ich kann mich wie ein Special Unicorn oder so fühlen lol 
                  * 
-                 * Ich stelle gerade fest, ich bin hochmotiviert viel dafür zu arbeiten, wege zu finden, um weniger zu Arbeiten. Den jetzt werfe ich nicht nur mehr den Generic Type T in den Ring, sondern auch noch Reflections. Auf die Idee bin ich duch diesen Stackoverflow beitrag gekommen: https://stackoverflow.com/questions/5053521/getting-variable-by-name-in-c-sharp
+                 * Ich stelle gerade fest, ich bin hochmotiviert viel dafür zu arbeiten, wege zu finden, um weniger zu Arbeiten. Den jetzt werfe ich nicht mehr den Generic Type T in den Ring, sondern Reflections. Auf die Idee bin ich duch diesen Stackoverflow beitrag gekommen: https://stackoverflow.com/questions/5053521/getting-variable-by-name-in-c-sharp
                  *und hier noch ein YouTube tutorial welches ich mir dazu angeschaut habe: https://www.youtube.com/watch?v=UdstAE72JRE 
                  *
-                 *Den durch das Suchen der bestimmten Variable und dessen speicherung in eineer Lokalen variable, könnte ich die if abfragen auf die gängisten Daten Typen reduzieren(also anstelle von age, kills, vorname, nachname einfach int, string) und häte dafür eine Funktion, welche mit allen (gängigen) Datentypen kompatible wäre. Es ist zwar teuer, aber ziemlich faszinierend und definitv einen Versuch wert. Ich meine, es ist eine nützliche Theorie dahinter, welche es m.M.n (hoffentlich) wert ist, dass ich jetzt den 3. Abend damit verbringe eine Generische Merge Sort Funktion hinzukriegen. Aber ich mein, abseits von den Run Time tests bin ich fertig mit der Prüfung, also kann man mal machen hab ja noch n Monat lol. 
+                 *Den durch das Suchen der bestimmten Variable und dessen speicherung in eineer Lokalen variable, könnte ich die if abfragen auf die gängisten Daten Typen reduzieren(also anstelle von age, kills, vorname, nachname einfach int, string z.B) und häte dafür eine Funktion, welche mit allen (gängigen) Datentypen kompatible wäre. Es ist zwar teuer, aber ziemlich faszinierend und definitv einen Versuch wert. Ich meine, es ist eine nützliche Theorie dahinter, welche es m.M.n (hoffentlich) wert ist, dass ich jetzt den 3. Abend damit verbringe eine Generische Merge Sort Funktion hinzukriegen. Aber ich mein, abseits von den Run Time tests bin ich fertig mit der Prüfung, also kann man mal machen hab ja noch n Monat lol. 
                  */
                 if (isInt)
                 {

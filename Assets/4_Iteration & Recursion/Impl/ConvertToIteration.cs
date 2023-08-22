@@ -42,7 +42,9 @@ namespace Iteration_VS_Recursion
             *
             *
             *Da immer x = 1 raus kommt, möglicher weiße muss ich den multiplikator, also das war vor dem x * function(x*x oder x/x) Multiplikator miteinander multiplizieren und den zurüclkgeben 
-            */
+            ...oder es ging halt nicht um x xD 
+             
+             */
             int reminder = 1;
 
             do
@@ -68,11 +70,8 @@ namespace Iteration_VS_Recursion
 
         public static int MyAlgorithmRec(int x)
         {
-            //x = 7
             if (x <= 1)
             {
-                //Debug.Log("bin raus alder");
-                //wieso called er hier noch mal die function? So als ob return = die function nochmal ist, die Debug.Logs lass ich drin. 
                 return 1;
             }
             if (x % 2 == 0)

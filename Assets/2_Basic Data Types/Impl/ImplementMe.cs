@@ -1,7 +1,4 @@
 
-using UnityEngine.Assertions;
-using UnityEngine.Windows;
-
 namespace BasicDataTypes
 {
     /// <summary>
@@ -46,19 +43,10 @@ namespace BasicDataTypes
         /// <returns>True if both doubles are equal.</returns>
         public static bool Compare(double a, double b, int testNum)
         {
-
             //unschön, wird eventuell ausgetauscht wenn ich einen besseren weg um die Rundungsfehler finde. Falls du das hier ließt, naja, kannst dir ja dann denken wie erfolgreich die suche war lol
-            return EqualPlusMinus(a, b);
-        }
+            float toleranz = 0.00000001f;
 
-        public static bool EqualPlusMinus(double a, double b, float tol = 0.00000001f)
-        {
-            /*tol = toleranzwert für etwaige rundungsfehler, welche mal ein absolut komisches problem hier sind. Ich meine es ist ne 64 Bit float und hat Rundungsfehler bei 0.3*3 +0.1? das ist 1, wo kommen die Rundungsfehler her? */
-            if ((a - b) >= (0 - tol) && (a - b) <= tol)
-            {
-                return true;
-            }
-            return false;
+            return (a - b) >= (0 - toleranz) && (a - b) <= toleranz; 
         }
         /// <summary>
         /// Count all the 1s in the BITS of "value".xw
@@ -68,7 +56,6 @@ namespace BasicDataTypes
         public static int CountOnes(uint value)
         {
             int counter = 0;
-            //von dezimal zu binär...
             if (value == 0)
             {
                 return 0;
@@ -77,16 +64,10 @@ namespace BasicDataTypes
 
             while (value > 0)
             {
-                //ist der wert 1 oder 0? 
                 uint remind = value % 2;
-                //hinzufügen des bits 
                 bits = remind.ToString() + bits;
-
-                //durch 2 teilen für abbruch bedingung 
                 value /= 2;
             }
-
-            //zähle die 1...
             foreach (char bit in bits)
             {
                 if (bit == '1')
