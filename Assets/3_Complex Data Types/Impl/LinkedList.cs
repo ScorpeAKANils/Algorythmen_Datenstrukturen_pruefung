@@ -90,8 +90,6 @@ namespace ComplexDataTypes
             LinkedNode reminder = root;
             while (true)
             {
-
-                Debug.Log("Iteretion: " + iterationCounter + "x gefunden: " + reminder.successor.Equals(x));
                 if (reminder.Equals(x))
                 {/*
                     1. speichere den pointer auf die aktuelle successor node
@@ -101,7 +99,6 @@ namespace ComplexDataTypes
                     var remindSuccessor = reminder.successor;
                     reminder.successor = node;
                     node.successor = remindSuccessor;
-                    Debug.Log(reminder.successor.name + " " + node.successor.name);
                     return;
                 }
                 else if (reminder.successor ==null)

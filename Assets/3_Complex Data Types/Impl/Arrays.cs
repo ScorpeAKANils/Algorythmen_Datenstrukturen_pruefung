@@ -25,7 +25,6 @@ namespace ComplexDataTypes
 
             uint[] uintArray = new uint[numUInts];
             int iteration = 0;
-            Debug.Log(uintSizeInBytes + " size: " + numUInts);
             while (iteration < numUInts)
             {
                 int startIndex = iteration * uintSizeInBytes;
@@ -50,7 +49,6 @@ namespace ComplexDataTypes
         {
             int uintSizeInBytes = sizeof(ushort);
             int numUInts = array.Length / uintSizeInBytes;
-            Debug.Log(uintSizeInBytes + " size: " + numUInts);
             ushort[] uushortArr = new ushort[numUInts];
             int iteration = 0;
             while (iteration < numUInts)
@@ -73,7 +71,7 @@ namespace ComplexDataTypes
         /// </summary>
         public static string[] Concat(string[] a, string[] b)
         {
-            //hier hab ich nachgeschlagenw was nochmal war xD: https://www.geeksforgeeks.org/c-sharp-string-concat-with-examples-set-2/
+            //hier hab ich nachgeschlagen was das nochmal war xD: https://www.geeksforgeeks.org/c-sharp-string-concat-with-examples-set-2/
             int i = 0;
             string[] concart = new string[a.Length + b.Length];
             foreach (string s in a)
@@ -102,11 +100,9 @@ namespace ComplexDataTypes
             {
                 if (array[i] == element)
                 {
-                    Debug.Log("the elemt " + element + " is in the array");
                     return i;
                 }
             }
-            Debug.Log("the elemt " + element + " is not in the array");
             return -1;
         }
     }
